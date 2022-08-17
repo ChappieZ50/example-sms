@@ -9,11 +9,7 @@ class UserService
 
     public function attempt($message = 'User successfully saved'): \Illuminate\Http\JsonResponse
     {
-        $credentials = [
-            'email'    => request()->get('email'),
-            'password' => request()->get('password'),
-        ];
-        $token = Auth::guard('api')->attempt($credentials);
+        $token = Auth::guard('api')->attempt(request()->only('email', 'password'));
         if (!$token) {
             return response()->json([
                 'message' => 'Credentials Incorrect'
@@ -21,7 +17,7 @@ class UserService
         }
         return response()->json([
             'message' => $message,
-            'token'   => $token
+            'token' => $token
         ]);
     }
 }

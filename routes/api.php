@@ -14,7 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('user')->group(function () {
-    Route::post('register', 'UserController@register');
-    Route::post('login', 'UserController@login');
+Route::middleware('api')->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::post('register', 'UserController@register');
+        Route::post('login', 'UserController@login');
+    });
+
+    Route::middleware('auth:api')->group(function () {
+        Route::apiResource('sms', 'SmsController')->except('destroy','update');
+    });
 });
+

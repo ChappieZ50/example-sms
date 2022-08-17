@@ -4,9 +4,9 @@ namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
+use Illuminate\Http\Response;
 
 class BaseRequest extends FormRequest
 {
@@ -15,7 +15,7 @@ class BaseRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
 
         throw new HttpResponseException(
-            response()->json(['errors' => $errors], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+            response()->json(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY)
         );
     }
 }

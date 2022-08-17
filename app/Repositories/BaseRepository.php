@@ -6,10 +6,11 @@ namespace App\Repositories;
 
 use App\Contracts\BaseContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 abstract class BaseRepository implements BaseContract
 {
-    private $entity;
+    protected $entity;
 
     /**
      * Repository constructor.
@@ -39,11 +40,38 @@ abstract class BaseRepository implements BaseContract
     }
 
     /**
-     * @param array $data
+     * @param int $perPage
+     * @param array $columns
+     * @param string $pageName
+     * @param $page
      * @return mixed
      */
-    public function create(array $data)
+    public function paginate(int $perPage = 15, array $columns = ['*'], string $pageName = 'page', $page = null): mixed
     {
-        return $this->entity->create($data);
+        return $this->entity->paginate($perPage = 15, $columns = ['*'], $pageName = 'page', $page = null);
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return $this
+     */
+    public function where($column, $operator = null, $value = null): static
+    {
+        $this->entity->where($column, $operator, $value, 'and');
+        return $this;
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param $value
+     * @return $this
+     */
+    public function orWhere($column, $operator = null, $value = null): static
+    {
+        $this->entity->orWhere($column, $operator, $value, 'or');
+        return $this;
     }
 }

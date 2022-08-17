@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class UserRequest extends BaseRequest
+class SmsRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +14,7 @@ class UserRequest extends BaseRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::guard('api')->check();
     }
 
     /**
@@ -24,9 +25,8 @@ class UserRequest extends BaseRequest
     public function rules()
     {
         return [
-            'name'     => 'required|min:3|max:255',
-            'email'    => 'required|unique:users,email|min:10|max:255',
-            'password' => 'required|min:8|max:255|confirmed',
+            'number' => 'required',
+            'message' => 'required|max:255',
         ];
     }
 }

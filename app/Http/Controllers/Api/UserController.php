@@ -4,31 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Contracts\UserContract;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\UserRequest;
-use App\Models\User;
+use App\Http\Requests\Api\Auth\LoginRequest;
+use App\Http\Requests\Api\Auth\RegisterRequest;
 use App\Services\UserService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    protected $user;
+    protected $entity;
 
-    public function __construct(UserContract $userContract)
+    public function __construct(UserContract $entity)
     {
-        $this->user = $userContract;
+        $this->entity = $entity;
     }
 
 
-    public function register(UserRequest $request): \Illuminate\Http\JsonResponse
+    public function register(RegisterRequest $request, UserService $service): \Illuminate\Http\JsonResponse
     {
-        $this->user->fill($request->validated())->save();
-        return app(UserService::class)->attempt();
+        $this->entity->fill($request->validated())->save();
+        return $service->attempt();
     }
 
-    public function login()
+    public function login(LoginRequest $request, UserService $service)
     {
-        return app(UserService::class)->attempt('Successfully logged in');
+        return $service->attempt( 'Successfully logged in');
     }
 
 }

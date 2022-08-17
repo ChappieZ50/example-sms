@@ -9,5 +9,9 @@ interface BaseContract
 
     public function save(): bool;
 
-    public function create(array $data);
+    public function paginate(int $perPage = 15, array $columns = ['*'], string $pageName = 'page', $page = null): mixed;
+
+    public function where($column, $operator = null, $value = null);
+
+    public function orWhere($column, $operator = null, $value = null);
 }
