@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -23,5 +24,10 @@ class Sms extends Model
             $m->send_time = Carbon::now();
             $m->user_id = Auth::guard('api')->user()->id;
         });
+    }
+
+    public function scopeBetweenSendTime(Builder $query, $from, $to = null): Builder
+    {
+        return $query->whereBetween('send_time', [$from, !$to ? Carbon::now() : $to]);
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('number', 20);
             $table->string('message');
-            $table->dateTime('send_time');
+            $table->dateTime('send_time')->index();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });

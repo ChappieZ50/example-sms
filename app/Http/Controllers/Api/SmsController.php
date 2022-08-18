@@ -7,6 +7,7 @@ use App\Events\SendSms;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SmsRequest;
 use App\Http\Resources\SmsResource;
+use Illuminate\Http\Response;
 
 class SmsController extends Controller
 {
@@ -17,7 +18,7 @@ class SmsController extends Controller
         $this->entity = $entity;
     }
 
-    public function index()
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         return SmsResource::collection($this->entity->paginateUserSms());
     }
@@ -28,5 +29,17 @@ class SmsController extends Controller
         return response()->json([
             'message' => 'Your sms successfully send'
         ]);
+    }
+
+    public function show($id): \Illuminate\Http\JsonResponse|SmsResource
+    {
+        $sms = $this->entity->find($id);
+        if (empty($sms)) {
+            return response()->json([
+                'message' => 'Sms not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new SmsResource($sms);
     }
 }

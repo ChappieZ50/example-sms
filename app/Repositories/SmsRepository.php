@@ -5,6 +5,8 @@ namespace App\Repositories;
 use App\Contracts\SmsContract;
 use App\Models\Sms;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SmsRepository extends BaseRepository implements SmsContract
 {
@@ -15,6 +17,12 @@ class SmsRepository extends BaseRepository implements SmsContract
 
     public function paginateUserSms()
     {
-        return $this->entity->where('user_id', '=', Auth::guard('api')->user()->id)->paginate();
+        return QueryBuilder::for($this->entity)
+            ->where('user_id', '=', Auth::guard('api')->user()->id)
+            ->allowedFields('send_time')
+            ->allowedFilters([
+                AllowedFilter::scope('between_send_time')
+            ])
+            ->paginate();
     }
 }

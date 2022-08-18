@@ -40,6 +40,15 @@ abstract class BaseRepository implements BaseContract
     }
 
     /**
+     * @param $id
+     * @return mixed
+     */
+    public function find($id): mixed
+    {
+        return $this->entity->find($id);
+    }
+
+    /**
      * @param int $perPage
      * @param array $columns
      * @param string $pageName

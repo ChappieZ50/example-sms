@@ -25,7 +25,7 @@ class SmsRequest extends BaseRequest
     public function rules()
     {
         return [
-            'number' => 'required',
+            'number' => 'required|max:20',
             'message' => 'required|max:255',
         ];
     }
