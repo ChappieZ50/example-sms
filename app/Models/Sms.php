@@ -22,7 +22,7 @@ class Sms extends Model
         parent::boot();
         static::saving(function ($m) {
             $m->send_time = Carbon::now();
-            $m->user_id = Auth::guard('api')->user()->id;
+            $m->user_id = Auth::guard('api')->id();
         });
     }
 

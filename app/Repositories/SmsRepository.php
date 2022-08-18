@@ -18,11 +18,16 @@ class SmsRepository extends BaseRepository implements SmsContract
     public function paginateUserSms()
     {
         return QueryBuilder::for($this->entity)
-            ->where('user_id', '=', Auth::guard('api')->user()->id)
+            ->where('user_id', '=', Auth::guard('api')->id())
             ->allowedFields('send_time')
             ->allowedFilters([
                 AllowedFilter::scope('between_send_time')
             ])
             ->paginate();
+    }
+
+    public function countUserSms()
+    {
+        return $this->entity->select('user_id')->count('user_id');
     }
 }
